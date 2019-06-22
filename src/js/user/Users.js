@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -9,11 +8,10 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
 import ArrowForward from '@material-ui/icons/ArrowForward'
 import Person from '@material-ui/icons/Person'
 import {Link} from 'react-router-dom'
-import {list} from './api-user.js'
+
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -26,30 +24,15 @@ const styles = theme => ({
   }
 })
 
-class Users extends Component {
-  state = {
-      users: []                                           //pierwsze zainicjowac tablice pusta ktora bedzie przechowywac userow
-  }
 
-  componentDidMount() {
-    list().then((data) => {
-      if (data.error) {
-        console.log(data.error)
-      } else {
-        this.setState({users: data})                    //updaetujemy stan tablicy komponentami z bazy danych
-      }
-    })
-  }
 
-  render() {
-    const {classes} = this.props
+
+const Users=(props)=>{
+
+    const {classes} = props;
     return (
-      <Paper className={classes.root} elevation={4}>
-        <Typography type="title" className={classes.title}>
-          All Users
-        </Typography>
         <List dense>
-         {this.state.users.map((item, i) => {                                             //to jest jeden element w wyswietlajacych sie klientach
+         {props.searchResults && props.searchResults.map((item, i) => {                                             //to jest jeden element w wyswietlajacych sie klientach
           return <Link to={"/user/" + item._id} key={i}>
                     <ListItem button>
                       <ListItemAvatar>
@@ -68,9 +51,8 @@ class Users extends Component {
                })
              }
         </List>
-      </Paper>
     )
-  }
+
 }
 
 Users.propTypes = {

@@ -62,7 +62,6 @@ class Signup extends Component {
       password: this.state.password || undefined
     };
     create(user).then((data) => {
-      console.log(data);
       if (data.error) {
         this.setState({error: data.error})
       } else {

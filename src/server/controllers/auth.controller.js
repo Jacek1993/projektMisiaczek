@@ -4,7 +4,6 @@ import expressJwt from 'express-jwt'
 import config from './../../config/config'
 
 const signin = (req, res) => {
-  console.log(req);
   User.findOne({
     "email": req.body.email
   }, (err, user) => {
@@ -64,3 +63,4 @@ export default {
   requireSignin,
   hasAuthorization
 }
+

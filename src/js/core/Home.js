@@ -5,39 +5,70 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
+import Search from "../user/Search";
+import Grid from "@material-ui/core/Grid/Grid";
+import {list} from '../user/api-user'
 // import seashellImg from './../assets/images/seashell.jpg'
 
 
 const styles = theme => ({
-  card: {
-    maxWidth: 600,
-    margin: 'auto',
-    marginTop: theme.spacing.unit * 5
-  },
-  title: {
-    padding:`${theme.spacing.unit * 3}px ${theme.spacing.unit * 2.5}px ${theme.spacing.unit * 2}px`,
-    color: theme.palette.text.secondary
-  },
-  media: {
-    minHeight: 330
-  }
+    root: {
+        flexGrow: 1,
+        margin: 30,
+    },
+    paper: {
+        height: '300px',
+        width: '100%',
+        margin: '0 auto'
+    },
+    grid:{
+        margin: '300px'
+    }
 })
 
 class Home extends Component {
+    constructor(){
+        super();
+        this.state={
+            searchResults: [],
+            error: ''
+        }
+        this.loadUsers=this.loadUsers.bind(this)
+    }
+
+
+    loadUsers(){
+
+        list().then((response)=>{
+            if(response.error){
+                console.log(response.error)
+                this.setState({error: response.error});
+            }
+            else{
+                this.setState({searchResults: response})
+            }
+        })
+    }
+
+    componentDidMount(){
+        this.loadUsers();
+        console.log('componentDidMount')
+    }
+
   render() {
     const {classes} = this.props
     return (
-        <Card className={classes.card}>
-          <Typography type="headline" component="h2" className={classes.title}>
-            Home Page
-          </Typography>
-          {/*<CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells"/>*/}
-          <CardContent>
-            <Typography type="body1" component="p">
-              Welcome to the MERN Skeleton home page.
-            </Typography>
-          </CardContent>
-        </Card>
+        <Grid container spacing={2}>
+            <Grid container xs={11} sm={11} margin={200} >
+                {this.state.searchResults &&(
+                    <Search searchResults={this.state.searchResults} />
+                )}
+
+            </Grid>
+            <Grid items xs={1} sm={1}>
+
+            </Grid>
+        </Grid>
     )
   }
 }
