@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Search from "../user/Search";
 import Grid from "@material-ui/core/Grid/Grid";
 import {list} from '../user/api-user'
+import Paper from '@material-ui/core/Paper'
 // import seashellImg from './../assets/images/seashell.jpg'
 
 
@@ -58,17 +59,14 @@ class Home extends Component {
   render() {
     const {classes} = this.props
     return (
-        <Grid container spacing={2}>
-            <Grid container xs={11} sm={11} margin={200} >
+    
+            <Paper container xs={11} sm={11} margin={100} >
                 {this.state.searchResults &&(
                     <Search searchResults={this.state.searchResults} />
                 )}
 
-            </Grid>
-            <Grid items xs={1} sm={1}>
-
-            </Grid>
-        </Grid>
+            </Paper>
+      
     )
   }
 }

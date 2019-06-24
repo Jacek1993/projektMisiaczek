@@ -14,7 +14,7 @@ import Users from "./Users";
 
 const styles = theme => ({
     card: {
-        margin: 'auto',
+        margin: '30px 25px',
         textAlign: 'center',
         paddingTop: 10,
         backgroundColor: '#80808024'

@@ -16,8 +16,9 @@ import Person from '@material-ui/icons/Person'
 import Divider from '@material-ui/core/Divider'
 import DeleteUser from './DeleteUser'
 import auth from './../auth/auth-helper'
-import {read} from './api-user.js'
+import {read, convertImage} from './api-user.js'
 import {Redirect, Link} from 'react-router-dom'
+
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -36,7 +37,13 @@ class Profile extends Component {
   constructor({match}) {
     super()
     this.state = {
-      user: '',
+      user: {
+        avatar:'',
+        name: '',
+        email: '',
+        created: ''
+      },
+      image: '',
       redirectToSignin: false
     }
     this.match = match
@@ -50,6 +57,10 @@ class Profile extends Component {
         this.setState({redirectToSignin: true})
       } else {
         this.setState({user: data})
+        // this.state.user.avatar=Uint8Array.from(this.state.user.avatar).buffer
+        
+       this.setState({image: convertImage(this.state.user.avatar)})
+       console.log(image)
       }
     })
   }
@@ -73,9 +84,7 @@ class Profile extends Component {
         <List dense>
           <ListItem>
             <ListItemAvatar>
-              <Avatar>
-                <Person/>
-              </Avatar>
+              <Avatar src={`data:image/png;base64,${this.state.image}`}/>
             </ListItemAvatar>
             <ListItemText primary={this.state.user.name} secondary={this.state.user.email}/> {
              auth.isAuthenticated().user && auth.isAuthenticated().user._id == this.state.user._id && 

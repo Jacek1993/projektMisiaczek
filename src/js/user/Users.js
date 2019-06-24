@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton'
 import ArrowForward from '@material-ui/icons/ArrowForward'
 import Person from '@material-ui/icons/Person'
 import {Link} from 'react-router-dom'
-
+import {convertImage, } from './api-user'
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -36,9 +36,7 @@ const Users=(props)=>{
           return <Link to={"/user/" + item._id} key={i}>
                     <ListItem button>
                       <ListItemAvatar>
-                        <Avatar>
-                          <Person/>
-                        </Avatar>
+                        <Avatar src={`data:image/png;base64,${convertImage(item.avatar)}`}/>
                       </ListItemAvatar>
                       <ListItemText primary={item.name}/>
                       <ListItemSecondaryAction>

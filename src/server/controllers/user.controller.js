@@ -1,6 +1,7 @@
 import User from '../models/user.model'
 import errorHandler from './../helpers/dbErrorHandler'
 import sharp from 'sharp'
+import fs from 'fs'
 
 const create = (req, res, next) => {
     const user = new User(req.body)
@@ -33,7 +34,8 @@ const userByID = (req, res, next, id) => {
 const read = (req, res) => {
     req.profile.hashed_password = undefined
     req.profile.salt = undefined
-    console.log(req.profile)
+    req.profile.avatar=new Uint8Array(req.profile.avatar)
+    console.log(req.profile.avatar)
     return res.json(req.profile)
 }
 
@@ -87,18 +89,22 @@ const update = (req, res, next) => {
     user.name = req.body.name;
     user.email = req.body.email;
     user.password = req.body.password;
-    user.avatar=req.file.buffer;
-    user.updated = Date.now()
-    user.save((err) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler.getErrorMessage(err)
-            })
-        }
-        user.hashed_password = undefined
-        user.salt = undefined
-        res.json(user)
+    sharp(req.file.buffer).resize({width:250, height:250}).png().toBuffer().then((data)=>{
+        user.avatar=data;
+
+        user.updated = Date.now()
+        user.save((err) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler.getErrorMessage(err)
+                })
+            }
+            user.hashed_password = undefined
+            user.salt = undefined
+            res.json(user)
+        })
     })
+   
 }
 
 

@@ -2,13 +2,13 @@ import axios from 'axios'
 
 const create = (user) => {
     return fetch('/api/users/', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
         .then((response) => {
             return response.json()
         }).catch((err) => console.log(err))
@@ -23,7 +23,7 @@ const list = () => {
 }
 //credentials to jest nasz token jwt
 const read = (params, credentials) => {
-    return fetch('/api/users/' + params.userId, {                               //caly ten obiket zawierajacy method, headers, wysylamy do servera
+    return fetch('/api/users/' + params.userId, { //caly ten obiket zawierajacy method, headers, wysylamy do servera
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -34,20 +34,6 @@ const read = (params, credentials) => {
         return response.json()
     }).catch((err) => console.log(err))
 }
-
-// const update = (params, credentials, user) => {
-//   return fetch('/api/users/' + params.userId, {
-//     method: 'PUT',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer ' + credentials.t
-//     },
-//     body: JSON.stringify(user)
-//   }).then((response) => {
-//     return response.json()
-//   }).catch((err) => console.log(err))
-// }
 
 const remove = (params, credentials) => {
     return fetch('/api/users/' + params.userId, {
@@ -83,13 +69,28 @@ const sendForm = (params, credentials, data) => {
     axios.put(url, data, config).then(r => console.log(r.status)).catch(e => console.log(e));
 }
 
+const convertImage = (data) => {
+    if (data) {
+        const dataBuffer = new Buffer(data.data)
+        const image = btoa(String.fromCharCode.apply(null, dataBuffer))
+        return image
+    }
+    else{
+        return '';
+    }
+}
+
+
+
 export {
     create,
     list,
     read,
     remove,
     search,
-    sendForm
+    sendForm,
+    convertImage,
+    convertImage1
 }
 
 /*
